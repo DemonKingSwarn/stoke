@@ -146,7 +146,7 @@ install)
 			done
 		fi
 		if [[ -z ${aptdeps[*]} ]]; then
-			sudo apt-get install "${aptdeps[*]}" -y
+			sudo apt-fast install "${aptdeps[*]}" -y
 		fi
 		makedeb -sir --no-confirm -H "stoke-build: $i"
 		sudo touch /var/db/stoke/"$i"
@@ -158,11 +158,11 @@ install)
 remove)
 	INPUT="$2"
 	if dpkg -s "$INPUT" >/dev/null; then
-		if ! sudo apt-get remove "$INPUT" -y; then
+		if ! sudo apt-fast remove "$INPUT" -y; then
 			stoke_message error "Failed to remove $INPUT"
 			exit 1
 		fi
-		sudo apt -y autoremove && sudo apt autoclean >/dev/null
+		sudo apt-fast -y autoremove && sudo apt autoclean >/dev/null
 		sudo rm -f /var/db/stoke/"$INPUT"
 	else
 		stoke_message error "$INPUT is not a valid MPR package"
